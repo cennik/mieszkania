@@ -8,7 +8,7 @@ export default class WebApi {
         this.DATA = DATA;
         this.io = new socketio.Server(12345, {
             cors: {
-              origin: "http://etiaro.tk:3000",
+              origin: "http://etiaro.tk:2137",
               methods: ["GET", "POST"]
             }
         })
