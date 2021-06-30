@@ -8,12 +8,18 @@ export default class WebApi {
         this.DATA = DATA;
         this.io = new socketio.Server(12345, {
             cors: {
-              origin: "http://localhost:3000",
+              origin: "http://etiaro.tk:3000",
               methods: ["GET", "POST"]
             }
         })
         this.io.on('connection', (client) => { 
             client.emit('allData', DATA);
         });
+    }
+    updateEntry(entry:Mieszkanie){
+        this.io.emit('update', entry);
+    }
+    addEntry(entry:Mieszkanie){
+        this.io.emit('add', entry);
     }
 }

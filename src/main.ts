@@ -30,10 +30,12 @@ async function scrap(scrappers: Array<shopSrapper>): Promise<void> {
                 if(!!tmp)
                     for(let kw of mieszkanie.keywords){
                         tmp.keywords.add(kw);
-                        //console.log(tmp.keywords);
+                        webApi.updateEntry(tmp);
                     }
-                else
+                else{
                     DATA.set(mieszkanie.url, mieszkanie);
+                    webApi.addEntry(mieszkanie);
+                }
             });
             logger.info(`${DATA.size.toString()} data positions`);
         }, ()=>{
