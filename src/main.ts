@@ -10,7 +10,7 @@ import WebApi from './webapi';
 
 const logger = new Logger('SCRAPPER'.bgMagenta, 'GENERAL');
 const keywords = (JSON.parse(fs.readFileSync('ulice.json').toString()) as Array<string>)
-    .map((keyword=>keyword.replaceAll(' ', '+')));
+    .map((keyword=>keyword.replace(/ /g, '+')));
 const DATA:Map<string, Mieszkanie> = new Map(JSON.parse(fs.readFileSync('data.json').toString()))
 DATA.forEach((v, key)=>{
 	v.keywords = new Set(v.keywords);
