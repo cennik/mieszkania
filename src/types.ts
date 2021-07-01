@@ -20,6 +20,7 @@ export interface Mieszkanie {
     bedrooms?: number,
     livingroom?: boolean,
     eatplace?: boolean,
+    furnished?: boolean,
     balcony?: boolean,
     basement?: boolean,
     PWdist?: number,
