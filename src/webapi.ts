@@ -1,6 +1,6 @@
 import { Set } from "json-set-map";
 import * as socketio from "socket.io";
-import { Mieszkanie } from "./types";
+import { Mieszkanie, mieszkanieFormat } from "./types";
 
 export default class WebApi {
     DATA: Map<string, Mieszkanie>;
@@ -15,19 +15,16 @@ export default class WebApi {
         })
         this.io.on('connection', (client) => {
             client.emit('allData', DATA);
-            client.on('update', entry => this.updateEntry(entry));
+            client.on('update', (entry: Mieszkanie) => this.updateEntry(entry));
         });
     }
-    forceTypes(entry: Mieszkanie) {
-        entry.keywords = new Set(entry.keywords)
-    }
     updateEntry(entry: Mieszkanie) {
-        this.forceTypes(entry);
+        mieszkanieFormat(entry);
         this.DATA.set(entry.url, entry);
         this.io.emit('update', entry);
     }
     addEntry(entry: Mieszkanie) {
-        this.forceTypes(entry);
+        mieszkanieFormat(entry);
         this.DATA.set(entry.url, entry);
         this.io.emit('add', entry);
     }
