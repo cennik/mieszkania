@@ -5,8 +5,8 @@ import { Mieszkanie, EmptyMieszkanie, MieszkanieState, ShopId } from '../types';
 import { shopSrapper } from '../shopI';
 
 export class Olxpl extends shopSrapper {
-    static url = 'https://www.olx.pl/nieruchomosci/mieszkania/wynajem/warszawa/q-';
-    static urlParams = encodeURI('search[filter_enum_rooms][0]=four&search[filter_float_price:to]=4500');
+    static url = 'https://www.olx.pl/d/nieruchomosci/stancje-pokoje/warszawa/q-';
+    static urlParams = 'search%5Bfilter_float_price:to%5D=1400';
     scrapSite(keyword: string): Promise<Array<Mieszkanie>> {
         return new Promise((resolve, reject) => {
             fetch(`${Olxpl.url}${keyword.replace(/ /g, '-')}/?page=${this.site}&${Olxpl.urlParams}`).then(res => res.text()).then((html) => {
@@ -19,14 +19,16 @@ export class Olxpl extends shopSrapper {
                     return resolve([]);//Not found any offer
                 }
 
-                let els = $('a.marginright5.link.linkWithHash').toArray();
+                let els = $('a').toArray().filter((element) => element.attribs.href &&
+                    (element.attribs.href.startsWith('/d/oferta/') || element.attribs.href.startsWith('https://www.otodom.pl/pl/oferta/')));
                 let res: Array<Mieszkanie> = els.map(el => {
                     let url = el.attribs.href;
                     if (url[0] == '/') url = 'https://www.olx.pl' + url;
                     if (url.indexOf('#') != -1)
-                        url = url.substr(0, url.indexOf('#'));
-                    let name = cheerio.default.text([el]).trim();
-                    return { url, name, keywords: new Set([keyword]), state: MieszkanieState.waiting, shopId: ShopId.Olxpl };
+                        url = url.substring(0, url.indexOf('#'));
+                    let name = $('h6', el).text();
+                    let price = parseInt($('p', el).text().replace(' ', ''));
+                    return { url, name, price, keywords: new Set([keyword]), state: MieszkanieState.waiting, shopId: ShopId.Olxpl };
                 });
                 resolve(res);
             }).catch(function (err) {

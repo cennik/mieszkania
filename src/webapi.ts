@@ -7,12 +7,11 @@ export default class WebApi {
     io: socketio.Server;
     constructor(DATA: Map<string, Mieszkanie>) {
         this.DATA = DATA;
-        this.io = new socketio.Server(12345, {
+        this.io = new socketio.Server(3001, {
             cors: {
-                origin: "http://etiaro.tk:2137",
-                methods: ["GET", "POST"]
+                origin: '*',
             }
-        })
+        });
         this.io.on('connection', (client) => {
             client.emit('allData', DATA);
             client.on('update', (entry: Mieszkanie) => this.updateEntry(entry));

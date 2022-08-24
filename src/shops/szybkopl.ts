@@ -5,8 +5,8 @@ import { Mieszkanie, EmptyMieszkanie, MieszkanieState, ShopId } from '../types';
 import { shopSrapper } from '../shopI';
 
 export class Szybkopl extends shopSrapper {
-    static url = 'https://www.szybko.pl/l/na-wynajem/lokal-mieszkalny/warszawa+';
-    static urlParams = 'assetType=lokal-mieszkalny&price_max_rent=4500&rooms_min=4'
+    static url = 'https://www.szybko.pl/l/na-wynajem/pokoj/Warszawa/';
+    static urlParams = '&price_max_rent=1400'
     scrapSite(keyword: string): Promise<Array<Mieszkanie>> {
         return new Promise((resolve, reject) => {
             fetch(`${Szybkopl.url}${keyword.replace(/ /g, '+')}?strona=${this.site}&${Szybkopl.urlParams}`).then(res => res.text()).then((html) => {
