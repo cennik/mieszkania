@@ -38,8 +38,11 @@ async function scrap(scrappers: Array<shopSrapper>): Promise<void> {
             });
             logger.info(`${DATA.size.toString()} data positions`);
         }, () => {
-            logger.info('Starting scrapping from beginning for ' + scrapper.constructor.name);
-            scrap([scrapper]);
+            logger.info('Waiting 1 hout before next scrapping for ' + scrapper.constructor.name);
+            setTimeout(() => {
+                logger.info('Starting scrapping from beginning for ' + scrapper.constructor.name);
+                scrap([scrapper]);
+            }, 60 * 60 * 1000);
         });
     });
 }
