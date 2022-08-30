@@ -5,8 +5,8 @@ import { Mieszkanie, EmptyMieszkanie, MieszkanieState, ShopId } from '../types';
 import { shopSrapper } from '../shopI';
 
 export class Olxpl extends shopSrapper {
-    static url = 'https://www.olx.pl/d/nieruchomosci/stancje-pokoje/warszawa/q-';
-    static urlParams = 'search%5Bfilter_float_price:to%5D=1400';
+    static url = 'https://www.olx.pl/d/nieruchomosci/mieszkania/warszawa/q-';
+    static urlParams = 'search%5Bfilter_float_price:to%5D=4200&search%5Bfilter_enum_rooms%5D%5B0%5D=three';
     scrapSite(keyword: string): Promise<Array<Mieszkanie>> {
         return new Promise((resolve, reject) => {
             fetch(`${Olxpl.url}${keyword.replace(/ /g, '-')}/?page=${this.site}&${Olxpl.urlParams}`).then(res => res.text()).then((html) => {
