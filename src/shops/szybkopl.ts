@@ -15,12 +15,14 @@ export class Szybkopl extends shopSrapper {
                 if (empty.length > 0)
                     return resolve([]);//Not found any offer
 
-                let els = $('.listing-title-heading.hide-overflow-text', '.listing-item:not(:contains("ARCHIWALNA"))').toArray();
+                let els = $('.listing-item').toArray();
                 let res: Array<Mieszkanie> = els.map(el => {
-                    let url = el.attribs.href;
+                    let text = $('.listing-title-heading', el)[0];
+                    let url = text.attribs.href;
                     if (url[0] == '/') url = 'https://www.szybko.pl' + url;
-                    let name = cheerio.default.text([el]).split('\n')[1];
-                    return { url, name, keywords: new Set([keyword]), state: MieszkanieState.waiting, shopId: ShopId.Szybkopl };
+                    let name = cheerio.default.text([text]).split('\n')[1];
+                    let price = parseInt($('.listing-price', el).text().replace(' ', ''));
+                    return { url, name, price, keywords: new Set([keyword]), state: MieszkanieState.waiting, shopId: ShopId.Szybkopl };
                 });
                 resolve(res);
             }).catch(function (err) {

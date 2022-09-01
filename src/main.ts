@@ -28,13 +28,15 @@ async function scrap(scrappers: Array<shopSrapper>): Promise<void> {
             res = res.filter(validateElement);
             res.forEach(mieszkanie => {
                 let tmp = DATA.get(mieszkanie.url);
-                if (!!tmp)
+                if (!!tmp) {
                     for (let kw of mieszkanie.keywords) {
                         tmp.keywords.add(kw);
                         webApi.updateEntry(tmp);
                     }
-                else
+                    if (!tmp.price) tmp.price = mieszkanie.price;
+                } else {
                     webApi.addEntry(mieszkanie);
+                }
             });
             logger.info(`${DATA.size.toString()} data positions`);
         }, () => {
